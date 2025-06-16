@@ -1,0 +1,2034 @@
+openapi: 3.0.0
+info:
+  title: telebat
+  version: '1.0.0'
+servers:
+  - url: 'http://127.0.0.1:8000'
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: muhammad
+                last_name:
+                  type: string
+                  example: Ghunaim
+                email:
+                  type: string
+                  example: muhammadghunaim77@gmail.com
+                password:
+                  type: integer
+                  example: '123456789'
+                password_confirmation:
+                  type: integer
+                  example: '123456789'
+                phone_number:
+                  type: number
+                  example: '+963998495255'
+                role:
+                  type: string
+                  example: user
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/email/verification-notification:
+    post:
+      tags:
+        - auth
+      summary: Resend Email Verification link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: muhammadghunaim77@gmail.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/send-code:
+    post:
+      tags:
+        - auth
+      summary: send-otp-code
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: number
+                  example: '+963998495255'
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/verify-code:
+    post:
+      tags:
+        - auth
+      summary: verify-otp-code
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: muhammadghunaim77@gmail.com
+                phone_number:
+                  type: number
+                  example: '+963998495255'
+                phone_number_otp_code:
+                  type: integer
+                  example: '8982'
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: login
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: number
+                  example: '+963998495255'
+                password:
+                  type: integer
+                  example: '123456789'
+                fcm_token:
+                  type: string
+                  example: test-fcm-token
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: logout
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/forgot-password:
+    post:
+      tags:
+        - auth
+      summary: forgot password
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: muhammadghunaim77@gmail.com
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/password/verify-otp:
+    post:
+      tags:
+        - auth
+      summary: Verify password otp
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: muhammadghunaim77@gmail.com
+                email_otp_code:
+                  type: integer
+                  example: '3578'
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/password/reset:
+    post:
+      tags:
+        - auth
+      summary: Reset password
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: muhammadghunaim77@gmail.com
+                password:
+                  type: integer
+                  example: '123456789'
+                password_confirmation:
+                  type: integer
+                  example: '123456789'
+      security:
+        - noauthAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /auth/confirm-password:
+    post:
+      tags:
+        - auth
+      summary: Confirm Password
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: integer
+                  example: '987654321'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cart:
+    get:
+      tags:
+        - cart
+      summary: Get cart products
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - cart
+      summary: Add to cart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  example: '1'
+                quantity:
+                  type: integer
+                  example: '1'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - cart
+      summary: Update cart
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                product_id:
+                  type: integer
+                  example: '1'
+                quantity:
+                  type: integer
+                  example: '5'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cart/remove:
+    delete:
+      tags:
+        - cart
+      summary: remove product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /cart/clear:
+    delete:
+      tags:
+        - cart
+      summary: Clear cart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /home:
+    get:
+      tags:
+        - home
+      summary: Home
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notifications:
+    get:
+      tags:
+        - notifications
+      summary: Get Notifications
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notifications/1ef735a2-2c67-40a4-8b9a-eb340c10626f/read:
+    patch:
+      tags:
+        - notifications
+      summary: Mark as read
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notifications/unread:
+    get:
+      tags:
+        - notifications
+      summary: fetch unread
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /notifications/read-all:
+    patch:
+      tags:
+        - notifications
+      summary: Mark all as read
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/currencies:
+    get:
+      tags:
+        - order
+      summary: Get Currencies
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/2:
+    get:
+      tags:
+        - order
+      summary: Get an Order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders:
+    get:
+      tags:
+        - order
+      summary: Get Orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - order
+      summary: Create Order and Invoice
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: header
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/5:
+    put:
+      tags:
+        - order
+      summary: Update Order
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                product_id:
+                  type: integer
+                  example: '1'
+                quantity:
+                  type: integer
+                  example: '1'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/{order_id}:
+    delete:
+      tags:
+        - order
+      summary: remove product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/{order_id}/cancel:
+    delete:
+      tags:
+        - order
+      summary: Cancel Order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /payments/{order_id}/stripe/payment-intent:
+    post:
+      tags:
+        - payment
+      summary: Pay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                "{\r\n    \"payment_request_id\":
+                {{payment_request_id}},\r\n    \"currency_id\": 1\r\n}"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: order_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /payments/15/invoice:
+    get:
+      tags:
+        - payment
+      summary: Get Invoice
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: download
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /payments/paypal/checkout:
+    post:
+      tags:
+        - payment
+      summary: PayPal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                "{\r\n    \"payment_request_id\":
+                {{payment_request_id}},\r\n    \"currency_id\": 1\r\n}"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get products
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: صوف
+        - name: section_id
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: store_id
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: price_range[]
+          in: query
+          schema:
+            type: integer
+          example: '70'
+        - name: quantity_range[]
+          in: query
+          schema:
+            type: integer
+          example: '90'
+        - name: sort_field
+          in: query
+          schema:
+            type: string
+          example: quantity
+        - name: sort_dir
+          in: query
+          schema:
+            type: string
+          example: desc
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - products
+      summary: Store product
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                store_id:
+                  type: integer
+                  example: '1'
+                ar_name:
+                  type: string
+                  example: فوتشيني
+                en_name:
+                  type: string
+                  example: Futtchini
+                ar_description:
+                  type: string
+                  example: شوكولا
+                en_description:
+                  type: string
+                  example: cocolate creap fruites
+                price:
+                  type: integer
+                  example: '25000'
+                quantity:
+                  type: integer
+                  example: '50'
+                image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/41:
+    patch:
+      tags:
+        - products
+      summary: Update Product
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                ar_name:
+                  type: string
+                  example: ميسييييي
+                en_name:
+                  type: string
+                  example: messi
+                ar_description:
+                  type: string
+                  example: ميسي يوزع
+                en_description:
+                  type: string
+                  example: Goalllllll
+                price:
+                  type: integer
+                  example: '220'
+                quantity:
+                  type: integer
+                  example: '1'
+                image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - products
+      summary: Get a Product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /products/40:
+    delete:
+      tags:
+        - products
+      summary: Delete a product
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /favorites:
+    get:
+      tags:
+        - favorites
+      summary: Get favorites
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /favorites/1:
+    post:
+      tags:
+        - favorites
+      summary: add to favorites
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - favorites
+      summary: Delete from favorites
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sections:
+    get:
+      tags:
+        - sections
+      summary: Get sections
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '2'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: ما
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - sections
+      summary: Create section
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                ar_name:
+                  type: string
+                  example: روبيينهو
+                en_name:
+                  type: string
+                  example: rubsto
+                ar_description:
+                  type: string
+                  example: هذا اختبار وصف
+                en_description:
+                  type: string
+                  example: That't hello barbecue
+                image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /sections/11:
+    get:
+      tags:
+        - sections
+      summary: Find section
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - sections
+      summary: Update section
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                ar_name:
+                  type: string
+                  example: نيمااااااااار
+                en_description:
+                  type: string
+                  example: And Neymar goes for the goal!!
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - sections
+      summary: Delete section
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /settings/password:
+    put:
+      tags:
+        - User
+      summary: Change password
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                current_password:
+                  type: integer
+                  example: '123456789'
+                password:
+                  type: integer
+                  example: '987654321'
+                password_confirmation:
+                  type: integer
+                  example: '987654321'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /settings/profile:
+    patch:
+      tags:
+        - User
+      summary: Update Profile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: muhammadghunaim44@gmail.com
+                phone_number:
+                  type: number
+                  example: '+963998495255'
+                first_name:
+                  type: string
+                  example: Hammadooo
+                profile_picture:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - User
+      summary: Delete Account
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - User
+      summary: User Profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: en
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stores:
+    get:
+      tags:
+        - store
+      summary: Get stores
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: على
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - store
+      summary: Create store
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                en_name:
+                  type: string
+                  example: ammak ana
+                ar_name:
+                  type: string
+                  example: نيماااااار
+                section_id:
+                  type: integer
+                  example: '1'
+                latitude:
+                  type: number
+                  example: '66.98754'
+                longitude:
+                  type: number
+                  example: '100.89654'
+                image:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stores/36:
+    patch:
+      tags:
+        - store
+      summary: Update store
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                ar_name:
+                  type: string
+                  example: ميسيييي
+                en_name:
+                  type: string
+                  example: Ronaldoo
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: locale
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - store
+      summary: Delete store
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /stores/32:
+    get:
+      tags:
+        - store
+      summary: Get store
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dashboard/stores:
+    get:
+      tags:
+        - Vendor
+      summary: Get vendor's stores
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept-Language
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dashboard/1/orders:
+    get:
+      tags:
+        - Vendor
+      summary: Get vendor store orders
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dashboard/orders/26/delivering:
+    patch:
+      tags:
+        - Vendor
+      summary: Mark as delivering
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept-Language
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /dashboard/orders/27/delivered:
+    patch:
+      tags:
+        - Vendor
+      summary: Mark as delivered
+      requestBody:
+        content: {}
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Accept-Language
+          in: header
+          schema:
+            type: string
+          example: ar
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    noauthAuth:
+      type: http
+      scheme: noauth
+  schemas:
+    Currency:
+      title: Currency
+      required:
+        - code
+        - name
+        - symbol
+        - precision
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        code:
+          type: string
+          example: USD
+        name:
+          type: string
+          example: 'United States Dollar'
+        symbol:
+          type: string
+          example: $
+        precision:
+          type: integer
+          example: 2
+        active:
+          type: boolean
+          example: true
+      type: object
+    Notification:
+      title: Notification
+      required:
+        - type
+        - notifiable_id
+        - notifiable_type
+        - data
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        type:
+          description: 'Notification class'
+          type: string
+        notifiable_id:
+          description: 'User or entity ID'
+          type: integer
+          format: int64
+        notifiable_type:
+          description: 'Morph type'
+          type: string
+        data:
+          description: 'Custom data payload'
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    Order:
+      title: Order
+      required:
+        - user_id
+        - status
+        - total
+        - store_id
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        user_id:
+          type: integer
+          format: int64
+        status:
+          type: string
+        total:
+          type: number
+          format: float
+        store_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        paymentRequest:
+          $ref: '#/components/schemas/PaymentRequest'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+      type: object
+    Payment:
+      title: Payment
+      required:
+        - model_id
+        - model_type
+        - payment_request_id
+        - user_id
+        - payment_method
+        - status
+        - price
+        - currency
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        model_id:
+          type: integer
+          format: int64
+        model_type:
+          type: string
+        payment_request_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        payment_method:
+          type: string
+          enum:
+            - PAYPAL
+            - STRIPE
+        status:
+          type: string
+          enum:
+            - PENDING
+            - COMPLETED
+            - CANCELED
+        paypal_order_id:
+          type: string
+          nullable: true
+        paypal_payer_id:
+          type: string
+          nullable: true
+        paypal_payer_email:
+          type: string
+          format: email
+          nullable: true
+        paypal_capture_response:
+          type: object
+          nullable: true
+        stripe_client_secret:
+          type: string
+          nullable: true
+        stripe_webhook_payload:
+          type: object
+          nullable: true
+        response:
+          type: object
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        price:
+          type: number
+          format: float
+        currency:
+          type: string
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+      type: object
+    PaymentRequest:
+      title: PaymentRequest
+      required:
+        - payable_id
+        - payable_type
+        - user_id
+        - stripe_payment_intent_id
+        - title
+        - description
+        - price
+        - currency
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        payable_id:
+          type: integer
+          format: int64
+        payable_type:
+          type: string
+        user_id:
+          type: integer
+          format: int64
+        stripe_payment_intent_id:
+          type: string
+        title:
+          description: 'Localized titles'
+          type: object
+        description:
+          description: 'Localized descriptions'
+          type: object
+        price:
+          type: number
+          format: float
+        currency:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - COMPLETED
+            - CANCELED
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+          nullable: true
+      type: object
+    Phone:
+      title: Phone
+      required:
+        - user_id
+        - phone_number
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        user_id:
+          type: integer
+          format: int64
+        phone_number:
+          type: string
+        phone_number_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        phone_number_otp_code:
+          type: string
+          nullable: true
+        phone_number_otp_expired_date:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    Product:
+      title: Product
+      required:
+        - store_id
+        - section_id
+        - name
+        - price
+        - quantity
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        store_id:
+          type: integer
+          format: int64
+        section_id:
+          type: integer
+          format: int64
+        name:
+          description: 'Localized names'
+          type: object
+        description:
+          description: 'Localized descriptions'
+          type: object
+          nullable: true
+        price:
+          type: number
+          format: float
+        quantity:
+          type: integer
+        image:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    Section:
+      title: Section
+      required:
+        - name
+        - description
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          description: 'Localized names'
+          type: object
+        description:
+          description: 'Localized descriptions'
+          type: object
+        image:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    Store:
+      title: Store
+      required:
+        - section_id
+        - vendor_id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        section_id:
+          type: integer
+          format: int64
+        vendor_id:
+          type: integer
+          format: int64
+        name:
+          description: 'Localized names'
+          type: object
+        longitude:
+          type: number
+          format: float
+          nullable: true
+        latitude:
+          type: number
+          format: float
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    User:
+      title: User
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        email:
+          type: string
+          format: email
+        email_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        profile_picture:
+          type: string
+          format: uri
+          nullable: true
+        latitude:
+          type: number
+          format: float
+          nullable: true
+        longitude:
+          type: number
+          format: float
+          nullable: true
+        verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      type: object
+    UserFcmToken:
+      title: 'User FCM Token'
+      required:
+        - user_id
+        - token_id
+        - fcm_token
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        user_id:
+          type: integer
+          format: int64
+        token_id:
+          type: string
+        fcm_token:
+          type: string
+        created_at:
+          description: 'Formatted date'
+          type: string
+          format: date
+        updated_at:
+          description: 'Formatted date'
+          type: string
+          format: date
+      type: object
+    Cart:
+      title: Cart
+      required:
+        - user_id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        user_id:
+          type: integer
+          format: int64
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartProductPivot'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CartProductPivot:
+      title: CartProductPivot
+      required:
+        - product_id
+        - quantity
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
